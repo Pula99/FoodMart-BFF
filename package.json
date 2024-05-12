@@ -1,0 +1,11 @@
+{
+  "name": "foodmart-bff",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "kusal bandara",
+  "license": "ISC"
+}
