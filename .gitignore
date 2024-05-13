@@ -1,0 +1,28 @@
+# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+
+# Build files
+build/
+dist/
+*.min.js
+
+# IDE/editor specific files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Optional: Uncomment the following line if using npm
+# package-lock.json
+
+# Optional: Uncomment the following line if using yarn
+# yarn.lock
