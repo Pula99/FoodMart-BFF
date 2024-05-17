@@ -9,9 +9,14 @@ const cartMicroService = axios.create({
     baseURL: `${config.cartService}/api/v1`
 })
 
+const userMircoService = axios.create({
+    baseURL: `${config.userService}/api/v1`
+})
+
 const apiInstances = {
     productMicroService,
-    cartMicroService
+    cartMicroService,
+    userMircoService
 }
 
 export default apiInstances;

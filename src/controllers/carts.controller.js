@@ -1,6 +1,7 @@
 import { HttpStatusCode } from "axios";
 import cartService from "../services/carts.service.js";
 import log4js from "log4js";
+import productService from "../services/products.service.js";
 
 const logger = log4js.getLogger();
 
@@ -17,8 +18,14 @@ const getAllCarts = async (req, res) => {
 const getCartById = async (req, res) => {
   try {
     const cartId = req.params.cartId;
-    const cart = await cartService.getCartById(cartId);
-    res.status(HttpStatusCode.Ok).send(cart?.data);
+    const product = await productService.getAllProducts();
+    let cart = await cartService.getCartById(cartId);
+    const mappedCartItems = mapProductIdsWithProductDetails(
+      product.data.content,
+      cart.data.cartItems
+    );
+    cart.data.cartItems = mappedCartItems;
+    res.status(HttpStatusCode.Ok).send(cart.data);
   } catch (error) {
     logger.error(
       `Error occurred in getting a cart with id ${cartId}`,
@@ -28,11 +35,21 @@ const getCartById = async (req, res) => {
   }
 };
 
+//add to util
+const mapProductIdsWithProductDetails = (products, cartItems) => {
+  return cartItems.map((cartItem) => {
+    const product = products.find(
+      (product) => product.id == cartItem.productId
+    );
+    return { product, quantity: cartItem.quantity };
+  });
+};
+
 const createCart = async (req, res) => {
   try {
     const cartData = req.body;
     const cart = await cartService.createCart(cartData);
-    res.status(HttpStatusCode.Ok).send(cart?.data);
+    res.status(HttpStatusCode.Created).send(cart?.data);
   } catch (error) {
     logger.error("Error occurred in creating a cart", error?.message);
     res.status(HttpStatusCode.InternalServerError).send(error?.message);
@@ -43,6 +60,7 @@ const addProductsToCart = async (req, res) => {
   try {
     const productData = req.body;
     const cartId = req.params.cartId;
+    //check if product is available, if not return error product not found, else add product to cart
     const cart = await cartService.addProductsToCart(cartId, productData);
     res.status(HttpStatusCode.Ok).send(cart?.data);
   } catch (error) {

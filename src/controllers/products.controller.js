@@ -26,11 +26,22 @@ const getProductById = async (req, res) => {
   }
 }
 
+const getAllProductsByCategory = async (req, res) => {
+  try {
+    const category = req.params.category;
+    const product = await productService.getAllProductsByCategory(category)
+    res.status(HttpStatusCode.Ok).send(product?.data);
+  } catch (error) {
+    logger.error(`Error occurred when getting all products by category ${category}`,error?.message);
+    res.status(HttpStatusCode.InternalServerError).send(error?.message);
+  }
+}
+
 const createProduct = async (req, res) => {
   try { 
     const productData = req.body;
     const products = await productService.createProduct(productData);
-    res.status(HttpStatusCode.Ok).send(products?.data)
+    res.status(HttpStatusCode.Created).send(products?.data)
   } catch (error) {
     logger.error("Error occurred in creating a product", error?.message);
     res.status(HttpStatusCode.InternalServerError).send(error?.message);
@@ -44,7 +55,7 @@ const updateProduct = async (req, res) => {
     const product = await productService.updateProduct(productId, productData)
     res.status(HttpStatusCode.Ok).send(product?.data);
   } catch (error) {
-    logger.error(`Error occurred in updating a product with id ${productId}`, error?.message);
+    logger.error(`Error occurred in updating a product`, error?.message);
     res.status(HttpStatusCode.InternalServerError).send(error?.message);
   }
 }
@@ -64,6 +75,7 @@ const deleteProduct = async (req, res) => {
 
 const productsController = {
     getAllProducts,
+    getAllProductsByCategory,
     createProduct,   
     getProductById,
     updateProduct,

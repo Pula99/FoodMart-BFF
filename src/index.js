@@ -5,6 +5,7 @@ import cors from "cors"
 
 import productsRouter from './routes/products.route.js';
 import cartsRouter from './routes/carts.route.js';
+import usersRouter from './routes/users.route.js';
 
 
 
@@ -21,6 +22,7 @@ app.use(cors())
 
 app.use("/api/v1", productsRouter.router)
 app.use("/api/v1", cartsRouter.router)
+app.use("/api/v1",usersRouter.router)
 
 
 // Start the server

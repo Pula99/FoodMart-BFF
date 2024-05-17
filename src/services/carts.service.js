@@ -22,7 +22,7 @@ const getCartById = async (cartId) => {
     try {
         const response = await apiInstances.cartMicroService.request({
             url: `/carts/${cartId}`,
-            method: "get"
+            method: httpConstants.httpMethods.get,
         })
         return response
     } catch (error) {
@@ -35,7 +35,7 @@ const createCart = async (cartData) => {
     try {
         const response = await apiInstances.cartMicroService.request({
             url: `/carts`,
-            method: "post",
+            method: httpConstants.httpMethods.post,
             data: cartData,
         });
         return response;
@@ -49,7 +49,7 @@ const addProductsToCart = async (cartId, productData) => {
     try {
         const response = await apiInstances.cartMicroService.request({
             url: `/carts/${cartId}`,
-            method: "post",
+            method: httpConstants.httpMethods.post,
             data: productData
         })
         return response
@@ -63,7 +63,7 @@ const updateCartItems =async (cartId,productId, productData) => {
     try {
         const response = await apiInstances.cartMicroService.request({
             url: `/carts/${cartId}/${productId}`,
-            method: "put",
+            method: httpConstants.httpMethods.put,
             data: productData
         })
         return response;
@@ -77,7 +77,7 @@ const deleteCartItems = async (cartId, productId) => {
     try {
         const response = await apiInstances.cartMicroService.request({
             url: `/carts/${cartId}/${productId}`,
-            method: "delete"
+            method: httpConstants.httpMethods.delete,
         })
         return response
     } catch (error) {
@@ -90,7 +90,7 @@ const deleteCart = async (cartId) => {
     try {
         const response = await apiInstances.cartMicroService.request({
             url: `/carts/${cartId}`,
-            method: "delete"
+            method: httpConstants.httpMethods.delete,
         })
         return response
     } catch (error) {

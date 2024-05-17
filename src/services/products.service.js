@@ -1,4 +1,5 @@
 import apiInstance from "../config/apiInstance.js";
+import httpConstants from "../constants/httpConstants.js"
 import log4js from "log4js";
 
 const logger = log4js.getLogger();
@@ -7,20 +8,32 @@ const getAllProducts = async () => {
   try {
     const response = await apiInstance.productMicroService.request({
       url: `/products`,
-      method: "get",
+      method: httpConstants.httpMethods.get,
     });
     return response;
   } catch (error) {
-    logger.error("Error occuerd in fetching all products", error.message);
+    logger.error("Error occuerd when fetching all products", error.message);
     throw error
   }
 };
+
+const getAllProductsByCategory = async (category) => {
+  try {
+    const response = await apiInstance.productMicroService.request({
+      url: `/products/categories/${category}`,
+      method: httpConstants.httpMethods.get,
+    });
+    return response;
+  } catch(error) {
+    logger.error("Error occurred when getting all products by category", error.message);
+  }
+}
 
 const getProductById = async (productId) => {
   try {
     const response = await apiInstance.productMicroService.request({
       url: `/products/${productId}`,
-      method: "get",
+      method: httpConstants.httpMethods.get,
     });
     return response;
   } catch (error) {
@@ -33,7 +46,7 @@ const createProduct = async (productData) => {
   try {
     const response = await apiInstance.productMicroService.request({
       url: `/products`,
-      method: "post",
+      method: httpConstants.httpMethods.post,
       data: productData,
     });
     return response;
@@ -47,7 +60,7 @@ const updateProduct = async (productId, productData) => {
   try {
     const response = await apiInstance.productMicroService.request({
       url: `/products/${productId}`,
-      method: "put",
+      method: httpConstants.httpMethods.put,
       data: productData,
     });
     return response;
@@ -61,7 +74,7 @@ const deleteProduct = async (productId) => {
   try {
     const response = await apiInstance.productMicroService.request({
       url: `/products/${productId}`,
-      method: "delete",
+      method: httpConstants.httpMethods.delete,
     })
     return response
   } catch (error) {
@@ -72,6 +85,7 @@ const deleteProduct = async (productId) => {
 
 const productServices = {
   getAllProducts,
+  getAllProductsByCategory,
   createProduct,
   getProductById,
   updateProduct,
