@@ -2,6 +2,7 @@ import { HttpStatusCode } from "axios";
 import cartService from "../services/carts.service.js";
 import log4js from "log4js";
 import productService from "../services/products.service.js";
+import CartUtilis from "../utils/cartUtils.js";
 
 const logger = log4js.getLogger();
 
@@ -20,29 +21,16 @@ const getCartById = async (req, res) => {
     const cartId = req.params.cartId;
     const product = await productService.getAllProducts();
     let cart = await cartService.getCartById(cartId);
-    const mappedCartItems = mapProductIdsWithProductDetails(
+    const mappedCartItems = CartUtilis.mapProductIdsWithProductDetails(
       product.data.content,
       cart.data.cartItems
     );
     cart.data.cartItems = mappedCartItems;
     res.status(HttpStatusCode.Ok).send(cart.data);
   } catch (error) {
-    logger.error(
-      `Error occurred in getting a cart with id ${cartId}`,
-      error?.message
-    );
+    logger.error(`Error occurred in getting a cart `, error?.message);
     res.status(HttpStatusCode.InternalServerError).send(error?.message);
   }
-};
-
-//add to util
-const mapProductIdsWithProductDetails = (products, cartItems) => {
-  return cartItems.map((cartItem) => {
-    const product = products.find(
-      (product) => product.id == cartItem.productId
-    );
-    return { product, quantity: cartItem.quantity };
-  });
 };
 
 const createCart = async (req, res) => {
