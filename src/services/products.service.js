@@ -1,19 +1,23 @@
 import apiInstance from "../config/apiInstance.js";
-import httpConstants from "../constants/httpConstants.js"
+import httpConstants from "../constants/httpConstants.js";
 import log4js from "log4js";
 
 const logger = log4js.getLogger();
 
-const getAllProducts = async () => {
+const getAllProducts = async (page, size) => {
   try {
     const response = await apiInstance.productMicroService.request({
       url: `/products`,
+      params: {
+        page,
+        size,
+      },
       method: httpConstants.httpMethods.get,
     });
     return response;
   } catch (error) {
     logger.error("Error occuerd when fetching all products", error.message);
-    throw error
+    throw error;
   }
 };
 
@@ -24,10 +28,13 @@ const getAllProductsByCategory = async (category) => {
       method: httpConstants.httpMethods.get,
     });
     return response;
-  } catch(error) {
-    logger.error("Error occurred when getting all products by category", error.message);
+  } catch (error) {
+    logger.error(
+      "Error occurred when getting all products by category",
+      error.message
+    );
   }
-}
+};
 
 const getProductById = async (productId) => {
   try {
@@ -38,7 +45,7 @@ const getProductById = async (productId) => {
     return response;
   } catch (error) {
     logger.error("Error occuerd in fetching a product", error.message);
-    throw error
+    throw error;
   }
 };
 
@@ -52,7 +59,7 @@ const createProduct = async (productData) => {
     return response;
   } catch (error) {
     logger.error("Error occured when creatig a product", error.message);
-    throw error
+    throw error;
   }
 };
 
@@ -66,7 +73,7 @@ const updateProduct = async (productId, productData) => {
     return response;
   } catch (error) {
     logger.error("Error occured when updating a product");
-    throw error
+    throw error;
   }
 };
 
@@ -75,13 +82,16 @@ const deleteProduct = async (productId) => {
     const response = await apiInstance.productMicroService.request({
       url: `/products/${productId}`,
       method: httpConstants.httpMethods.delete,
-    })
-    return response
+    });
+    return response;
   } catch (error) {
-    logger.error(`Error occurred when deleting a product with id ${productId}`,error.message)
-    throw error
+    logger.error(
+      `Error occurred when deleting a product with id ${productId}`,
+      error.message
+    );
+    throw error;
   }
-}
+};
 
 const productServices = {
   getAllProducts,
@@ -89,7 +99,7 @@ const productServices = {
   createProduct,
   getProductById,
   updateProduct,
-  deleteProduct
+  deleteProduct,
 };
 
 export default productServices;

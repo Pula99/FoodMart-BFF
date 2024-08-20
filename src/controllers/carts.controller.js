@@ -16,6 +16,19 @@ const getAllCarts = async (req, res) => {
   }
 };
 
+const getCartByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const getCart = await cartService.getCartByUserId(userId);
+    res.status(HttpStatusCode.Ok).send(getCart?.data);
+  } catch (error) {
+    logger.error("Error occurred in getting all carts", error?.message);
+    res.status(HttpStatusCode.InternalServerError).send(error?.message);
+  }
+};
+
+
+
 const getCartById = async (req, res) => {
   try {
     const cartId = req.params.cartId;
@@ -33,6 +46,7 @@ const getCartById = async (req, res) => {
   }
 };
 
+
 const createCart = async (req, res) => {
   try {
     const cartData = req.body;
@@ -48,7 +62,6 @@ const addProductsToCart = async (req, res) => {
   try {
     const productData = req.body;
     const cartId = req.params.cartId;
-    //check if product is available, if not return error product not found, else add product to cart
     const cart = await cartService.addProductsToCart(cartId, productData);
     res.status(HttpStatusCode.Ok).send(cart?.data);
   } catch (error) {
@@ -73,6 +86,18 @@ const updateCartItems = async (req, res) => {
     res.status(HttpStatusCode.InternalServerError).send(error?.message);
   }
 };
+
+const updateCart = async (req, res) => {
+  try {
+    const cartId = req.params.cartId;
+    const cartData = req.body;
+    const cart = await cartService.updateCart(cartId,cartData);
+    res.status(HttpStatusCode.Ok).send(cart?.data);
+  } catch (error) {
+    logger.error("Error occurred in updating a item", error?.message);
+    res.status(HttpStatusCode.InternalServerError).send(error?.message);
+  }
+}
 
 const deleteCartItems = async (req, res) => {
   try {
@@ -105,12 +130,14 @@ const deleteCart = async (req, res) => {
 
 const cartController = {
   getAllCarts,
+  getCartByUserId,
   getCartById,
   createCart,
   addProductsToCart,
   updateCartItems,
   deleteCartItems,
   deleteCart,
+  updateCart
 };
 
 export default cartController;

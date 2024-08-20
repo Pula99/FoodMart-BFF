@@ -6,7 +6,7 @@ const logger = log4js.getLogger();
 
 const getAllProducts = async (req, res) => {
   try {
-    const products = await productService.getAllProducts();
+    const products = await productService.getAllProducts(req?.query.page,req.query.size);
     res.status(HttpStatusCode.Ok).send(products?.data)
   } catch (error) {
     logger.error("Error occurred in getting all products", error?.message);
@@ -29,7 +29,7 @@ const getProductById = async (req, res) => {
 const getAllProductsByCategory = async (req, res) => {
   try {
     const category = req.params.category;
-    const product = await productService.getAllProductsByCategory(category)
+        const product = await productService.getAllProductsByCategory(category)
     res.status(HttpStatusCode.Ok).send(product?.data);
   } catch (error) {
     logger.error(`Error occurred when getting all products by category ${category}`,error?.message);

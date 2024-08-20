@@ -18,6 +18,19 @@ const getAllCarts = async () => {
     }
 }
 
+const getCartByUserId = async (userId) => {
+    try {
+        const response = await apiInstances.cartMicroService.request({
+            url: `/carts/user/${userId}`,
+            method: httpConstants.httpMethods.get,
+        })
+        return response;
+    } catch (error) {
+        logger.error("error occured in fetching carts by user id ", error.message);
+        throw error
+    }
+}
+
 const getCartById = async (cartId) => {
     try {
         const response = await apiInstances.cartMicroService.request({
@@ -73,6 +86,19 @@ const updateCartItems =async (cartId,productId, productData) => {
     }
 }
 
+const updateCart = async (cartId,cartData) => {
+    try {
+        const response = await apiInstances.cartMicroService.request({
+            url: `/carts/${cartId}`,
+            method: httpConstants.httpMethods.put,
+            data: cartData
+        })
+        return response;
+    } catch (error) {
+        logger.error("error occured when updating items",error.message);
+    }
+}
+
 const deleteCartItems = async (cartId, productId) => {
     try {
         const response = await apiInstances.cartMicroService.request({
@@ -101,12 +127,14 @@ const deleteCart = async (cartId) => {
 
 const cartService = {
     getAllCarts,
+    getCartByUserId,
     getCartById,
     createCart,
     addProductsToCart,
     updateCartItems,
     deleteCartItems,
-    deleteCart
+    deleteCart,
+    updateCart
 }
 
 export default cartService;
