@@ -1,0 +1,5 @@
+{
+    "cartService":"http://localhost:4000",
+    "productService":"http://localhost:4001",
+    "userService":"http://localhost:4002"
+}
